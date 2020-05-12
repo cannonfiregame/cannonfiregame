@@ -13,19 +13,16 @@
             <div class="col" id="content">
                     
                 <div style="margin-left: 10%;">
-                    <h2>Ana sex refrences counter</h2>
+                    <h2>Ana sex references counter</h2>
         
                     
                 </div>
                 <div style="margin-left: 10%;">
                     <p id="today">Today: </p>
+                    <p id=total>Total: </p>
                 </div>
                 <div style="margin-left: 10%;">
                     <button id="addPoint" class="button"> Add new point </button>
-                </div>
-
-                <div id="lastweektonight">
-
                 </div>
 
             </div>
@@ -64,19 +61,56 @@
         <script>
 
                 let db = firebase.firestore();
+                GetPoints();
 
                 document.getElementById('addPoint').onclick = function(evt){
+                    console.log("Button pressed")
+
                     evt.preventDefault();
-                    //Add point to DB
-                }
+                    
+                    let currentPoints = 0;
+                    let toadyPoints = 0;
+                    let DBtimestamp = 0;
 
-                function GetTodaysPoints(){
-                    db.collection('refrences').where('timestamp','<=',db.FieldValue.serverTimestamp()).get()
-                }
+                    db.collection('counting').doc('main').get().then(doc => {
+                        currentPoints = doc.data().total;
+                        toadyPoints = doc.data().today;
+                        DBtimestamp = doc.data().timestamp;
 
-                function GetAllFromLastWeek(){
+                        let now = new Date();
+                        let startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                        let timestamp = startOfDay / 1000;
+
+                        let data = {}
+
+                        if(timestamp != DBtimestamp){
+                            data = {
+                            today: 0,
+                            total: currentPoints + 1,
+                            timestamp: timestamp
+                            }
+                        }else{
+                            data = {
+                            today: toadyPoints + 1,
+                            total: currentPoints + 1,
+                            }
+                        }
+
+
+                        db.collection('counting').doc('main').update(data).then(GetPoints());
+                    });
+
+                   
                     
                 }
+
+                function GetPoints(){
+                    db.collection('counting').doc('main').get().then(doc => {
+                        document.getElementById('today').innerText = "Today: " + doc.data().today;
+                        document.getElementById('total').innerText = "Total: " + doc.data().total;
+                    });
+                }
+
         </script>
 
     </body>
