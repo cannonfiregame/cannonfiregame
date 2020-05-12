@@ -9,7 +9,7 @@
         <title>Ana sex refrences counter!</title>
     </head>
     <body style="font-family: 'Roboto', sans-serif;">
-        <div class="row">
+        <div class="row" style="margin-top: 10%;">
             <div class="col" id="content">
                     
                 <div style="margin-left: 10%;">
@@ -18,7 +18,7 @@
                     
                 </div>
                 <div style="margin-left: 10%;">
-                    <p id="today">Points today: </p>
+                    <p id="today">Today: </p>
                 </div>
                 <div style="margin-left: 10%;">
                     <button id="addPoint" class="button"> Add new point </button>
@@ -41,6 +41,7 @@
 
         <!-- The core Firebase JS SDK is always required and must be listed first -->
         <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-firestore.js"></script>
 
         <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
@@ -61,13 +62,16 @@
         </script>
 
         <script>
+
+                let db = firebase.firestore();
+
                 document.getElementById('addPoint').onclick = function(evt){
                     evt.preventDefault();
                     //Add point to DB
                 }
 
                 function GetTodaysPoints(){
-                        
+                    db.collection('refrences').where('timestamp','<=',db.FieldValue.serverTimestamp()).get()
                 }
 
                 function GetAllFromLastWeek(){
