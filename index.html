@@ -75,7 +75,6 @@
 
                 let db = firebase.firestore();
                 GetPoints();
-GetPointB();
 
                 document.getElementById('addPoint').onclick = function(evt){
                     console.log("Button pressed")
@@ -152,7 +151,7 @@ document.getElementById('addPointB').onclick = function(evt){
                         }
 
 
-                        db.collection('counting').doc('blnm).update(data).then(GetPoints());
+                        db.collection('counting').doc('blm).update(data).then(GetPoints());
                     });
 
                    
