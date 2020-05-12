@@ -31,8 +31,8 @@
                     
                 </div>
                 <div style="margin-left: 10%;">
-                    <p id="today">Today: </p>
-                    <p id=total>Total: </p>
+                    <p id="todayB">Today: </p>
+                    <p id=totalB>Total: </p>
                 </div>
                 <div style="margin-left: 10%;">
                     <button id="addPointB" class="button"> Add new point </button>
@@ -126,7 +126,7 @@ document.getElementById('addPointB').onclick = function(evt){
                     let toadyPoints = 0;
                     let DBtimestamp = 0;
 
-                    db.collection('counting').doc('main').get().then(doc => {
+                    db.collection('counting').doc('blm').get().then(doc => {
                         currentPoints = doc.data().total;
                         toadyPoints = doc.data().today;
                         DBtimestamp = doc.data().timestamp;
@@ -151,7 +151,7 @@ document.getElementById('addPointB').onclick = function(evt){
                         }
 
 
-                        db.collection('counting').doc('bln').update(data).then(GetPoints());
+                        db.collection('counting').doc('blnm).update(data).then(GetPoints());
                     });
 
                    
@@ -163,6 +163,11 @@ document.getElementById('addPointB').onclick = function(evt){
                     db.collection('counting').doc('main').get().then(doc => {
                         document.getElementById('today').innerText = "Today: " + doc.data().today;
                         document.getElementById('total').innerText = "Total: " + doc.data().total;
+                    });
+
+db.collection('counting').doc('blm').get().then(doc => {
+                        document.getElementById('todayB').innerText = "Today: " + doc.data().today;
+                        document.getElementById('totalB').innerText = "Total: " + doc.data().total;
                     });
                 }
 
