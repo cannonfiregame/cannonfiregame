@@ -40,6 +40,33 @@
 
             </div>
 
+<div style="margin-left: 10%;">
+                    <h2 style="margin-top: 10px;font-size: 40px;">Miha sex references counter</h2>
+        
+                    
+                </div>
+                <div style="margin-left: 10%;">
+                    <p id="todayM">Today: </p>
+                    <p id="totalM">Total: </p>
+                </div>
+                <div style="margin-left: 10%;">
+                    <button id="addPointM" class="button"> Add new point </button>
+                </div>
+
+            </div>
+
+<div style="margin-left: 10%;">
+                    <h2 style="margin-top: 10px;font-size: 40px;">Antonio sex references counter</h2>
+        
+                    
+                </div>
+                <div style="margin-left: 10%;">
+                    
+                    <p>Total: infinite</p>
+                </div>
+                
+            </div>
+
             
 
         </div>
@@ -158,6 +185,47 @@ document.getElementById('addPointB').onclick = function(evt){
                     
                 }
 
+document.getElementById('addPointM').onclick = function(evt){
+                    console.log("Button pressed")
+
+                    evt.preventDefault();
+                    
+                    let currentPoints = 0;
+                    let toadyPoints = 0;
+                    let DBtimestamp = 0;
+
+                    db.collection('counting').doc('miha').get().then(doc => {
+                        currentPoints = doc.data().total;
+                        toadyPoints = doc.data().today;
+                        DBtimestamp = doc.data().timestamp;
+
+                        let now = new Date();
+                        let startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                        let timestamp = startOfDay / 1000;
+
+                        let data = {}
+
+                        if(timestamp != DBtimestamp){
+                            data = {
+                            today: 0,
+                            total: currentPoints + 1,
+                            timestamp: timestamp
+                            }
+                        }else{
+                            data = {
+                            today: toadyPoints + 1,
+                            total: currentPoints + 1,
+                            }
+                        }
+
+
+                        db.collection('counting').doc('miha').update(data).then(GetPoints());
+                    });
+
+                   
+                    
+                }
+
 
                 function GetPoints(){
                     db.collection('counting').doc('main').get().then(doc => {
@@ -169,6 +237,12 @@ db.collection('counting').doc('blm').get().then(doc => {
                         document.getElementById('todayB').innerText = "Today: " + doc.data().today;
                         document.getElementById('totalB').innerText = "Total: " + doc.data().total;
                     });
+
+db.collection('counting').doc('miha').get().then(doc => {
+                        document.getElementById('todayM').innerText = "Today: " + doc.data().today;
+                        document.getElementById('totalM').innerText = "Total: " + doc.data().total;
+                    });
+
                 }
 
         </script>
